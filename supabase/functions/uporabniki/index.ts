@@ -11,7 +11,7 @@ const cors = {
 const odgovor = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
 
-const VLOGE = ["prodajalec", "administracija", "vodja"];
+const VLOGE = ["prodajalec", "administracija", "vodja", "lastnik"];
 const IME_RE = /^[a-z0-9._-]{3,40}$/;
 
 Deno.serve(async (req) => {

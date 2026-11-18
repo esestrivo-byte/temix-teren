@@ -12,7 +12,6 @@ export default function TerenPodrobno() {
   const nav = useNavigate();
   const { profil } = useAuth();
   const vodja = profil?.vloga === "vodja";
-  const lahkoUreja = vodja || false;
   const { profili, poId } = useProfili();
   const [teren, setTeren] = useState<Teren | null>(null);
   const [naslovi, setNaslovi] = useState<NaslovTerena[]>([]);
@@ -106,7 +105,7 @@ export default function TerenPodrobno() {
             <dt>Napredek</dt><dd>{obdelani} / {naslovi.length} naslovov obdelanih · {narocila} naročil</dd>
             {teren.opombe && <><dt>Opombe</dt><dd className="pre">{teren.opombe}</dd></>}
           </dl>
-          {lahkoUreja && (
+          {vodja && (
             <div className="actions">
               <button onClick={izbrisi} className="danger">Izbriši</button>
               <button onClick={() => setUrejanje({ ...teren })}>Uredi teren</button>
@@ -120,7 +119,7 @@ export default function TerenPodrobno() {
           <label>Regija<select value={u.regija ?? ""} onChange={set("regija")}><option value="">—</option>{REGIJE.map((r) => <option key={r}>{r}</option>)}</select></label>
           <label>Kraj<input value={u.kraj ?? ""} onChange={set("kraj")} /></label>
           <label>Tehnologija<select value={u.tehnologija ?? ""} onChange={set("tehnologija")}><option value="">—</option><option>FTTH</option><option>HFC</option><option>FTTH/HFC</option></select></label>
-          <label>Prodajalec<select value={u.prodajalec_id ?? ""} onChange={set("prodajalec_id")}><option value="">(nedodeljen)</option>{profili.filter((p) => p.aktiven && p.vloga !== "administracija").map((p) => <option key={p.id} value={p.id}>{imePriimek(p)}</option>)}</select></label>
+          <label>Prodajalec<select value={u.prodajalec_id ?? ""} onChange={set("prodajalec_id")}><option value="">(nedodeljen)</option>{profili.filter((p) => p.aktiven && (p.vloga === "prodajalec" || p.vloga === "vodja")).map((p) => <option key={p.id} value={p.id}>{imePriimek(p)}</option>)}</select></label>
           <label>Velja od<input type="date" value={u.velja_od ?? ""} onChange={set("velja_od")} /></label>
           <label>Velja do<input type="date" value={u.velja_do ?? ""} onChange={set("velja_do")} /></label>
           <label>Status<select value={u.status} onChange={(e) => setUrejanje({ ...u, status: e.target.value as StatusTerena })}>{Object.entries(STATUSI_TERENA).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></label>

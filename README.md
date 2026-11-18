@@ -16,6 +16,9 @@ Spletna aplikacija za terensko (d2d) ekipo Temix: prijava z uporabniškim imenom
 | Prodajalec | vidi svoje, spreminja status, beleži obiske naslovov | vnaša svojo (dokler ni potrjena) | – |
 | Administracija | vidi vse | vidi vse | – |
 | Vodja | ureja, dodeljuje, briše | vidi vse, potrjuje | ustvarja račune |
+| Lastnik | vidi vse (samo branje) | vidi vse | – |
+
+Statistiko vidi vsak: prodajalec svojo, vodja, administracija in lastnik celotno ekipo.
 
 Prijava je z uporabniškim imenom (npr. `erik.straus`); v Supabase Auth je shranjeno kot interni naslov `ime.priimek@uporabniki.temix-teren.si`, na katerega se nikoli ne pošilja pošta. Ob prvi prijavi si uporabnik nastavi svoje geslo.
 

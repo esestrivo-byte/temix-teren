@@ -14,7 +14,8 @@ const ura = (t: string) => t.slice(0, 5);
 
 export default function Razpolozljivost() {
   const { profil } = useAuth();
-  const pregled = profil?.vloga === "vodja" || profil?.vloga === "administracija";
+  const pregled = profil?.vloga !== "prodajalec";
+  const vnasa = profil?.vloga === "prodajalec" || profil?.vloga === "vodja";
   const vodja = profil?.vloga === "vodja";
   const { profili } = useProfili();
   const [zacetek, setZacetek] = useState(() => ponedeljek(new Date()));
@@ -64,7 +65,7 @@ export default function Razpolozljivost() {
   }
 
   const ljudje = pregled
-    ? profili.filter((p) => p.aktiven && p.vloga !== "administracija")
+    ? profili.filter((p) => p.aktiven && (p.vloga === "prodajalec" || p.vloga === "vodja"))
     : profili.filter((p) => p.id === profil?.id);
 
   return (
@@ -80,7 +81,7 @@ export default function Razpolozljivost() {
       </div>
       {napaka && <p className="error">{napaka}</p>}
 
-      <form className="card grid" onSubmit={dodaj}>
+      {vnasa && <form className="card grid" onSubmit={dodaj}>
         <h3 className="full">Kdaj lahko delam</h3>
         <label>Dan<input type="date" value={nov.datum} onChange={(e) => setNov({ ...nov, datum: e.target.value })} required /></label>
         <label>Regija<select value={nov.regija} onChange={(e) => setNov({ ...nov, regija: e.target.value })}><option value="">—</option>{REGIJE.map((r) => <option key={r}>{r}</option>)}</select></label>
@@ -88,7 +89,7 @@ export default function Razpolozljivost() {
         <label>Do<input type="time" value={nov.do} onChange={(e) => setNov({ ...nov, do: e.target.value })} required /></label>
         <label className="full">Opomba<input value={nov.opomba} onChange={(e) => setNov({ ...nov, opomba: e.target.value })} placeholder="npr. imam avto, lahko tudi izven LJ" /></label>
         <div className="full actions"><button className="primary">Dodaj termin</button></div>
-      </form>
+      </form>}
 
       <div className="week-wrap">
         <table className="week">
