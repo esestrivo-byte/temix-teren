@@ -18,8 +18,12 @@ export default function Prijava() {
   return (
     <div className="login">
       <form className="card" onSubmit={prijava}>
-        <h1>Temix <span>teren</span></h1>
-        <p className="muted">Prijava za terensko ekipo</p>
+        <img className="login-logo" src="/telemach-vedno-v-igri-logo.png" alt="Telemach – Vedno v igri." />
+        <div className="gradient-line" />
+        <div>
+          <h1>Prijava</h1>
+          <p className="muted">Temix d.o.o. · pooblaščeni prodajalec Telemach</p>
+        </div>
         <label>Uporabniško ime
           <input autoFocus autoCapitalize="none" autoComplete="username" value={ime}
             onChange={(e) => setIme(e.target.value)} placeholder="ime.priimek" required />

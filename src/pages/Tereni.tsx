@@ -30,7 +30,7 @@ export default function Tereni() {
   }, []);
   useEffect(() => { nalozi(); }, [nalozi]);
 
-  const prodajalci = profili.filter((p) => p.aktiven && p.vloga !== "administracija");
+  const prodajalci = profili.filter((p) => p.aktiven && (p.vloga === "prodajalec" || p.vloga === "vodja"));
 
   const prikazani = useMemo(() => tereni.filter((t) =>
     (!filterStatus || t.status === filterStatus) &&
@@ -71,7 +71,7 @@ export default function Tereni() {
   return (
     <section>
       <div className="head">
-        <h2>{vodja ? "Tereni" : "Moji tereni"}</h2>
+        <h2>{profil?.vloga === "prodajalec" ? "Moji tereni" : "Tereni"}</h2>
         {vodja && !obrazec && <button className="primary" onClick={() => setObrazec({ ...prazen })}>+ Nov teren</button>}
       </div>
       {napaka && <p className="error">{napaka}</p>}
@@ -125,6 +125,7 @@ export default function Tereni() {
                 {vodja && <div className="small">Prodajalec: {imePriimek(poId(t.prodajalec_id))}</div>}
               </div>
               <select className={`status s-${t.status}`} value={t.status}
+                disabled={!vodja && t.prodajalec_id !== profil?.id}
                 onChange={(e) => spremeniStatus(t, e.target.value as StatusTerena)}>
                 {Object.entries(STATUSI_TERENA).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>

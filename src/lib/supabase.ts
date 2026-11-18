@@ -10,7 +10,7 @@ export const DOMENA_UPORABNIKOV = "uporabniki.temix-teren.si";
 export const vEmail = (uporabniskoIme: string) =>
   `${uporabniskoIme.trim().toLowerCase()}@${DOMENA_UPORABNIKOV}`;
 
-export type Vloga = "prodajalec" | "administracija" | "vodja";
+export type Vloga = "prodajalec" | "administracija" | "vodja" | "lastnik";
 export type StatusTerena = "prost" | "dodeljen" | "v_delu" | "zakljucen";
 
 export interface Profil {
@@ -81,6 +81,7 @@ export const VLOGE: Record<Vloga, string> = {
   prodajalec: "Prodajalec",
   administracija: "Administracija",
   vodja: "Vodja",
+  lastnik: "Lastnik",
 };
 
 export const REGIJE = [
