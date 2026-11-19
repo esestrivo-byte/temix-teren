@@ -72,6 +72,7 @@ export const STATUSI_TERENA: Record<StatusTerena, string> = {
 export const REZULTATI: Record<string, string> = {
   ni_doma: "Ni doma",
   ni_interesa: "Ni interesa",
+  pustil_ponudbo: "Pustil ponudbo",
   ponovni_obisk: "Ponovni obisk",
   naroceno: "Naročeno",
   drugo: "Drugo",
