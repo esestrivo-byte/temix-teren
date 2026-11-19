@@ -26,7 +26,7 @@ function razpon(o: Obdobje, od: string, doo: string): [string, string] {
   return [od, doo];
 }
 
-interface Vrstica { id: string; ime: string; obiski: number; narocila: number; ponovni: number; ure: number; tereni: number }
+interface Vrstica { id: string; ime: string; obiski: number; narocila: number; ponovni: number; ponudbe: number; ure: number; tereni: number }
 
 export default function Statistika() {
   const { profil } = useAuth();
@@ -78,6 +78,7 @@ export default function Statistika() {
     obiski: fObiski.length,
     narocila: fObiski.filter((o) => o.rezultat === "naroceno").length,
     ponovni: fObiski.filter((o) => o.rezultat === "ponovni_obisk").length,
+    ponudbe: fObiski.filter((o) => o.rezultat === "pustil_ponudbo").length,
     ure: fTermini.reduce((s, t) => s + ure(t.od, t.do), 0),
     tereni: fTereni.length,
   };
@@ -108,6 +109,7 @@ export default function Statistika() {
         obiski: o.length,
         narocila: o.filter((x) => x.rezultat === "naroceno").length,
         ponovni: o.filter((x) => x.rezultat === "ponovni_obisk").length,
+        ponudbe: o.filter((x) => x.rezultat === "pustil_ponudbo").length,
         ure: termini.filter((t) => t.potrjeno && t.prodajalec_id === p.id).reduce((s, t) => s + ure(t.od, t.do), 0),
         tereni: tereni.filter((t) => t.prodajalec_id === p.id && (t.status === "dodeljen" || t.status === "v_delu")).length,
       };
@@ -151,7 +153,7 @@ export default function Statistika() {
 
       <div className="kpis">
         <div className="kpi"><span>Naročila</span><b>{stevilo(skupaj.narocila)}</b><small>konverzija {odstotek(skupaj.narocila, skupaj.obiski)}</small></div>
-        <div className="kpi"><span>Obiskani naslovi</span><b>{stevilo(skupaj.obiski)}</b><small>{stevilo(skupaj.ponovni)} za ponovni obisk</small></div>
+        <div className="kpi"><span>Obiskani naslovi</span><b>{stevilo(skupaj.obiski)}</b><small>{stevilo(skupaj.ponudbe)} ponudb, {stevilo(skupaj.ponovni)} za ponovni obisk</small></div>
         <div className="kpi"><span>Ure na terenu</span><b>{stevilo(skupaj.ure, 1)}</b><small>potrjena razpoložljivost</small></div>
         <div className="kpi"><span>Naročila na uro</span><b>{skupaj.ure ? stevilo(skupaj.narocila / skupaj.ure, 2) : "—"}</b><small>aktivni tereni: {stevilo(skupaj.tereni)}</small></div>
       </div>
@@ -211,12 +213,12 @@ export default function Statistika() {
           <h3 className="flush">Po prodajalcih</h3>
           <div className="table-wrap">
             <table className="tbl">
-              <thead><tr><th>Prodajalec</th><th>Naročila</th><th>Obiski</th><th>Konverzija</th><th>Ponovni</th><th>Ure</th><th>Nar./uro</th><th>Tereni</th></tr></thead>
+              <thead><tr><th>Prodajalec</th><th>Naročila</th><th>Obiski</th><th>Konverzija</th><th>Ponudbe</th><th>Ponovni</th><th>Ure</th><th>Nar./uro</th><th>Tereni</th></tr></thead>
               <tbody>
                 {vrstice.map((r) => (
                   <tr key={r.id} className={izbran === r.id ? "sel" : ""} onClick={() => setIzbran(izbran === r.id ? "" : r.id)}>
                     <td>{r.ime}</td><td><b>{r.narocila}</b></td><td>{r.obiski}</td><td>{odstotek(r.narocila, r.obiski)}</td>
-                    <td>{r.ponovni}</td><td>{stevilo(r.ure, 1)}</td><td>{r.ure ? stevilo(r.narocila / r.ure, 2) : "—"}</td><td>{r.tereni}</td>
+                    <td>{r.ponudbe}</td><td>{r.ponovni}</td><td>{stevilo(r.ure, 1)}</td><td>{r.ure ? stevilo(r.narocila / r.ure, 2) : "—"}</td><td>{r.tereni}</td>
                   </tr>
                 ))}
               </tbody>
